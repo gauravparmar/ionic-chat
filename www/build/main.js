@@ -80,9 +80,9 @@ var HomePage = (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Test\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n	<!-- <p>Enter your username</p> -->\n	<ion-item>\n		<ion-label floating>Username</ion-label>\n		<ion-input type="text" [(ngModel)]="username"></ion-input>\n	</ion-item>\n	<button ion-button block outline (click)="loginUser()">Enter</button>\n</ion-content>\n'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      ChatApp\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n	<!-- <p>Enter your username</p> -->\n	<ion-item>\n		<ion-label floating>Name</ion-label>\n		<ion-input type="text" [(ngModel)]="username"></ion-input>\n	</ion-item>\n	<button ion-button block (click)="loginUser()">Enter</button>\n</ion-content>\n'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], HomePage);
     return HomePage;
 }());
@@ -118,6 +118,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 
+// export interface Item { username: string, message: string }
 /**
  * Generated class for the ChatPage page.
  *
@@ -126,16 +127,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 // @IonicPage()
 var ChatPage = (function () {
-    function ChatPage(navCtrl, navParams, db, afm, afDB) {
+    function ChatPage(navCtrl, navParams, db, afm, afDB, loadingCtrl) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.db = db;
         this.afm = afm;
         this.afDB = afDB;
+        this.loadingCtrl = loadingCtrl;
+        this.showSpinner = true;
         this.username = "";
         this.message = "";
+        this.loaderState = true;
+        this.loading = this.loadingCtrl.create({
+            content: 'Loading messages...'
+        });
         this.username = this.navParams.data.username;
         this.items = afDB.list('chats').valueChanges();
+        this.items.subscribe(function (res) {
+            if (_this.loaderState == true)
+                _this.dismissLoader();
+        });
+        console.log('constructor loaded');
+        this.showLoader();
+        // this.scrollToBottom();
     }
     ChatPage.prototype.setMyClasses = function (user) {
         var classes = {
@@ -144,30 +159,121 @@ var ChatPage = (function () {
         };
         return classes;
     };
-    ChatPage.prototype.sendMessage = function () {
-        // console.log('Sending msg');
-        this.afDB.list('chats').push({
-            username: this.username,
-            message: this.message,
-            joined: false
-        });
-        this.message = "";
+    ChatPage.prototype.showLoader = function () {
+        this.loaderState = true;
+        this.loading.present();
     };
+    ChatPage.prototype.dismissLoader = function () {
+        this.loading.dismiss();
+        this.loaderState = false;
+        this.scrollToBottom('dismissLoader');
+    };
+    ChatPage.prototype.sendMessage = function () {
+        console.log('Sending msg');
+        if (this.message != "") {
+            this.afDB.list('chats').push({
+                username: this.username,
+                message: this.message,
+                joined: false,
+                left: false
+            });
+        }
+        this.message = "";
+        this.scrollToBottom('sendMessage');
+    };
+    ChatPage.prototype.eventHandler = function (keyCode) {
+        console.log('eventHandler Sending msg');
+        if (keyCode == 13) {
+            this.afDB.list('chats').push({
+                username: this.username,
+                message: this.message,
+                joined: false,
+                left: false
+            });
+            this.message = "";
+            this.scrollToBottom('eventHandler');
+        }
+    };
+    //scrolls to bottom whenever the page has loaded
+    ChatPage.prototype.ionViewDidEnter = function () {
+        console.log('ionViewDidEnter ChatPage');
+        // console.log('ionViewDidEnter ChatPage exit');
+        // this.scrollToBottom();
+        // this.scrollToBottom();
+    };
+    // ionViewDidEnter() {
+    // 	console.log('ionViewDidEnter ChatPage');
+    // 	// // this.content.scrollToBottom();
+    // 	// var element = document.getElementById("myLabel");
+    // 	// // I can't remember why I added a short timeout, 
+    // 	// // but you might be able to use ngzone instead.
+    // 	// // the below works great though. 
+    // 	// console.log(element);
+    // 	// element.scrollIntoView(true);
+    // 	// setTimeout(()=>{element.scrollIntoView(true)},200);
+    // 	this.afDB.list('chats').push({
+    // 		username:this.username,
+    // 		message:"",
+    // 		joined:true,
+    // 		left:false		
+    // 	});
+    // 	this.content.scrollToBottom();
+    // 	// setTimeout(() => {
+    // 	// 	this.content.scrollToBottom();
+    // 	// }, 300);
+    // }
     ChatPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad ChatPage');
+        // this.scrollToBottom();
+        // this.afDB.list('chats').push({
+        // 	username:this.username,
+        // 	message:"",
+        // 	joined:true,
+        // 	left:false		
+        // });
+        // setTimeout(() => {
+        // 	this.content.scrollToBottom();
+        // }, 300);
+    };
+    ChatPage.prototype.ionViewWillLeave = function () {
         this.afDB.list('chats').push({
             username: this.username,
             message: "",
-            joined: true
+            joined: false,
+            left: true
         });
     };
+    // scrollto() {
+    // 	console.log('scrollto ChatPage');
+    // 	setTimeout(() => {
+    // 		this.content.scrollToBottom(1000);
+    // 	}, 300);
+    // 	// var element = document.getElementById("myLabel");
+    // 	// // I can't remember why I added a short timeout, 
+    // 	// // but you might be able to use ngzone instead.
+    // 	// // the below works great though. 
+    // 	// setTimeout(()=>{element.scrollIntoView(true)},200);
+    // }
+    ChatPage.prototype.scrollToBottom = function (from) {
+        var _this = this;
+        console.log("from : " + from);
+        console.log('scrollToBottom ChatPage');
+        setTimeout(function () {
+            _this.content.scrollToBottom();
+        });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */]),
+        __metadata("design:type", Object)
+    ], ChatPage.prototype, "content", void 0);
     ChatPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-chat',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/'<!--\n  Generated template for the ChatPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Chats\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n \n<ion-content padding>\n    <div *ngFor="let item of items | async">\n      <div *ngIf="!item.joined" [class]="username==item.username?\'chat floatRight\':\'chat floatLeft\'">\n          <div class="chatUsername">{{item.username}}</div>\n          <div class="chatMessage">{{item.message}}</div>\n      </div>\n      <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined</span></div>\n    </div>\n</ion-content>\n\n<ion-footer>\n  <div id="messagebox">\n    <!-- <ion-list> -->\n        <ion-item>\n          <!-- <ion-label  >Enter message here..</ion-label> -->\n          <ion-input [(ngModel)]="message" placeholder="Enter message here.."></ion-input>\n        </ion-item>\n      <!-- </ion-list> -->\n    <!-- <ion-toolbar>\n      <ion-label color="primary" floating>Enter message here...</ion-label>\n      <ion-input [(ngModel)]="message"></ion-input>  \n    </ion-toolbar> -->\n    <button ion-button (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>\n  </div>\n</ion-footer>'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/,
+            selector: 'page-chat',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/'<!--\n  Generated template for the ChatPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Chats\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->\n<ion-content padding has-footer>\n  <div class="chatArea">\n    <div *ngFor="let item of items | async">\n      <div *ngIf="!item.joined && !item.left" [class]="username==item.username?\'chat floatRight\':\'chat floatLeft\'">\n          <div class="chatUsername">{{item.username}}</div>\n          <div class="chatMessage">{{item.message}}</div>\n      </div>\n      <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined</span></div>\n      <div class="userChatStatus" *ngIf="item.left"><span>{{item.username}} left</span></div>\n    </div>\n  </div>\n  <ion-label id="myLabel">&nbsp;</ion-label>\n</ion-content>\n\n\n<ion-footer>\n  <div id="messagebox">\n    <!-- <ion-list> -->\n        <ion-item>\n          <!-- <ion-label  >Enter message here..</ion-label> -->\n          <ion-input [(ngModel)]="message" placeholder="Enter message here.." (keypress)="eventHandler($event.keyCode)"></ion-input>\n          <!-- <ion-input [(ngModel)]="message" placeholder="Enter message here.." ></ion-input> -->\n        </ion-item>\n      <!-- </ion-list> -->\n    <!-- <ion-toolbar>\n      <ion-label color="primary" floating>Enter message here...</ion-label>\n      <ion-input [(ngModel)]="message"></ion-input>  \n    </ion-toolbar> -->\n    <button type="button" ion-button (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>\n  </div>\n</ion-footer>'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */], __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _f || Object])
     ], ChatPage);
     return ChatPage;
+    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=chat.js.map
@@ -246,7 +352,7 @@ var AppModule = (function () {
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_9__app_component__["a" /* MyApp */], {}, {
+                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_9__app_component__["a" /* MyApp */], {}, {
                     links: []
                 }),
                 __WEBPACK_IMPORTED_MODULE_7__angular_forms__["a" /* FormsModule */],
@@ -254,7 +360,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_6_angularfire2_firestore__["b" /* AngularFirestoreModule */],
                 __WEBPACK_IMPORTED_MODULE_8_angularfire2_database__["b" /* AngularFireDatabaseModule */],
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicApp */]],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_9__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_10__pages_home_home__["a" /* HomePage */],
@@ -263,7 +369,7 @@ var AppModule = (function () {
             providers: [
                 __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */],
                 __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
-                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicErrorHandler */] },
             ]
         })
     ], AppModule);
@@ -314,7 +420,7 @@ var MyApp = (function () {
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\app\app.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
     return MyApp;
 }());

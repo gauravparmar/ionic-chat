@@ -34,6 +34,7 @@ page-chat {
 			/* to hide the lines from behind the text, you have to set the background color the same as the container */ 
 			background: #fff; 
 			padding: 0 15px; 
+			color: #b3b3b3;
 		}
 	}
 
@@ -46,4 +47,8 @@ page-chat {
 		float: right;
 		background-color: #92c9fd;
 	}
+	// .chatArea{
+	// 	padding-bottom: 48px;
+	// }
+	
 }

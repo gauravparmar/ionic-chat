@@ -4,6 +4,7 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>
@@ -11,29 +12,35 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
- 
-<ion-content padding>
+<!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+<ion-content padding has-footer>
+  <div class="chatArea">
     <div *ngFor="let item of items | async">
-      <div *ngIf="!item.joined" [class]="username==item.username?'chat floatRight':'chat floatLeft'">
+      <div *ngIf="!item.joined && !item.left" [class]="username==item.username?'chat floatRight':'chat floatLeft'">
           <div class="chatUsername">{{item.username}}</div>
           <div class="chatMessage">{{item.message}}</div>
       </div>
       <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined</span></div>
+      <div class="userChatStatus" *ngIf="item.left"><span>{{item.username}} left</span></div>
     </div>
+  </div>
+  <ion-label id="myLabel">&nbsp;</ion-label>
 </ion-content>
+
 
 <ion-footer>
   <div id="messagebox">
     <!-- <ion-list> -->
         <ion-item>
           <!-- <ion-label  >Enter message here..</ion-label> -->
-          <ion-input [(ngModel)]="message" placeholder="Enter message here.."></ion-input>
+          <ion-input [(ngModel)]="message" placeholder="Enter message here.." (keypress)="eventHandler($event.keyCode)"></ion-input>
+          <!-- <ion-input [(ngModel)]="message" placeholder="Enter message here.." ></ion-input> -->
         </ion-item>
       <!-- </ion-list> -->
     <!-- <ion-toolbar>
       <ion-label color="primary" floating>Enter message here...</ion-label>
       <ion-input [(ngModel)]="message"></ion-input>  
     </ion-toolbar> -->
-    <button ion-button (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>
+    <button type="button" ion-button (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>
   </div>
 </ion-footer>
