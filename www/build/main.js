@@ -135,9 +135,16 @@ var ChatPage = (function () {
         this.afm = afm;
         this.afDB = afDB;
         this.loadingCtrl = loadingCtrl;
-        this.showSpinner = true;
+        // showSpinner: boolean = true;
         this.username = "";
         this.message = "";
+        // setMyClasses(user) {
+        // 	let classes = {
+        // 	  floatLeft:!this.username==user,
+        // 	  floatRight:this.username==user,
+        // 	};
+        // 	return classes;
+        // }
         this.loaderState = true;
         this.loading = this.loadingCtrl.create({
             content: 'Loading messages...'
@@ -151,14 +158,8 @@ var ChatPage = (function () {
         console.log('constructor loaded');
         this.showLoader();
         // this.scrollToBottom();
+        console.log(this.datetime);
     }
-    ChatPage.prototype.setMyClasses = function (user) {
-        var classes = {
-            floatLeft: !this.username == user,
-            floatRight: this.username == user,
-        };
-        return classes;
-    };
     ChatPage.prototype.showLoader = function () {
         this.loaderState = true;
         this.loading.present();
@@ -270,10 +271,9 @@ var ChatPage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-chat',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/'<!--\n  Generated template for the ChatPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Chats\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->\n<ion-content padding has-footer>\n  <div class="chatArea">\n    <div *ngFor="let item of items | async">\n      <div *ngIf="!item.joined && !item.left" [class]="username==item.username?\'chat floatRight\':\'chat floatLeft\'">\n          <div class="chatUsername">{{item.username}}</div>\n          <div class="chatMessage">{{item.message}}</div>\n      </div>\n      <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined</span></div>\n      <div class="userChatStatus" *ngIf="item.left"><span>{{item.username}} left</span></div>\n    </div>\n  </div>\n  <ion-label id="myLabel">&nbsp;</ion-label>\n</ion-content>\n\n\n<ion-footer>\n  <div id="messagebox">\n    <!-- <ion-list> -->\n        <ion-item>\n          <!-- <ion-label  >Enter message here..</ion-label> -->\n          <ion-input [(ngModel)]="message" placeholder="Enter message here.." (keypress)="eventHandler($event.keyCode)"></ion-input>\n          <!-- <ion-input [(ngModel)]="message" placeholder="Enter message here.." ></ion-input> -->\n        </ion-item>\n      <!-- </ion-list> -->\n    <!-- <ion-toolbar>\n      <ion-label color="primary" floating>Enter message here...</ion-label>\n      <ion-input [(ngModel)]="message"></ion-input>  \n    </ion-toolbar> -->\n    <button type="button" ion-button (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>\n  </div>\n</ion-footer>'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _f || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */], __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]])
     ], ChatPage);
     return ChatPage;
-    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=chat.js.map

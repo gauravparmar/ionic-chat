@@ -30,7 +30,7 @@ export class ChatPage {
 	username:string ="";
 	message:string ="";
 	items: Observable<any[]>;
-	
+
 	// setMyClasses(user) {
 	// 	let classes = {
 	// 	  floatLeft:!this.username==user,
@@ -45,6 +45,8 @@ export class ChatPage {
 		content: 'Loading messages...'
 	});
 	
+	datetime:Date;
+	
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFirestore, public afm : AngularFirestoreModule, public afDB: AngularFireDatabase,public loadingCtrl: LoadingController) {
 		this.username=this.navParams.data.username;
@@ -57,6 +59,8 @@ export class ChatPage {
 		console.log('constructor loaded');
 		this.showLoader();
 		// this.scrollToBottom();
+		console.log(this.datetime);
+		
 	}
 
 	showLoader() {
@@ -81,6 +85,7 @@ export class ChatPage {
 				left:false		
 			});
 		}
+
 
 		this.message="";
 
