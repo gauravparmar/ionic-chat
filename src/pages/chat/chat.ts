@@ -25,18 +25,21 @@ import  'rxjs/add/operator/switchMap';
 export class ChatPage {
 	@ViewChild(Content) content: any;
 	
-	showSpinner: boolean = true;
+	// showSpinner: boolean = true;
 
 	username:string ="";
 	message:string ="";
 	items: Observable<any[]>;
-	setMyClasses(user) {
-		let classes = {
-		  floatLeft:!this.username==user,
-		  floatRight:this.username==user,
-		};
-		return classes;
-	}
+	
+	// setMyClasses(user) {
+	// 	let classes = {
+	// 	  floatLeft:!this.username==user,
+	// 	  floatRight:this.username==user,
+	// 	};
+	// 	return classes;
+	// }
+
+
 	loaderState:boolean = true;
 	loading = this.loadingCtrl.create({
 		content: 'Loading messages...'
