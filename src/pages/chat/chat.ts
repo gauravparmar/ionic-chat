@@ -3,7 +3,7 @@ import { NavController, NavParams,Content, LoadingController } from 'ionic-angul
 import { AngularFirestore, AngularFirestoreModule  } from 'angularfire2/firestore';
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase,AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import  'rxjs/add/operator/switchMap';
 
@@ -30,6 +30,7 @@ export class ChatPage {
 	username:string ="";
 	message:string ="";
 	items: Observable<any[]>;
+	itemsRef: AngularFireList<any>;
 
 	// setMyClasses(user) {
 	// 	let classes = {
@@ -50,6 +51,7 @@ export class ChatPage {
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFirestore, public afm : AngularFirestoreModule, public afDB: AngularFireDatabase,public loadingCtrl: LoadingController) {
 		this.username=this.navParams.data.username;
+		this.itemsRef = afDB.list('chats');
 		this.items=afDB.list('chats').valueChanges();
 		this.items.subscribe(res=>{
 									if(this.loaderState == true) 
@@ -60,7 +62,7 @@ export class ChatPage {
 		this.showLoader();
 		// this.scrollToBottom();
 		console.log(this.datetime);
-		
+
 	}
 
 	showLoader() {
@@ -146,12 +148,12 @@ export class ChatPage {
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad ChatPage');
 		// this.scrollToBottom();
-		// this.afDB.list('chats').push({
-		// 	username:this.username,
-		// 	message:"",
-		// 	joined:true,
-		// 	left:false		
-		// });
+		this.afDB.list('chats').push({
+			username:this.username,
+			message:"",
+			joined:true,
+			left:false		
+		});
 
 		// setTimeout(() => {
 		// 	this.content.scrollToBottom();
@@ -187,6 +189,17 @@ export class ChatPage {
             this.content.scrollToBottom();
         });
     }
+
+	deleteAllMessages() {
+		this.itemsRef.remove();
+
+		this.afDB.list('chats').push({
+			username:this.username,
+			message:"",
+			joined:true,
+			left:false		
+		});
+	}
 	
 	
 }
