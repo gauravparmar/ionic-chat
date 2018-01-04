@@ -25677,3 +25677,61 @@ ion-navbar.toolbar {
   min-height: calc(46px + constant(safe-area-inset-bottom));
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
+
+page-chat div#messagebox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+page-chat .chat {
+  width: 80%;
+  margin: 7px 0px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: block;
+}
+
+page-chat .chatUsername {
+  color: #488aff;
+  font-weight: bold;
+}
+
+page-chat .userChatStatus {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  clear: both;
+}
+
+page-chat .userChatStatus:before {
+  border-top: 1px solid #dfdfdf;
+  content: "";
+  margin: 0 auto;
+  /* this centers the line to the full width specified */
+  position: absolute;
+  /* positioning must be absolute here, and relative positioning must be applied to the parent */
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 95%;
+  z-index: -1;
+}
+
+page-chat .userChatStatus span {
+  /* to hide the lines from behind the text, you have to set the background color the same as the container */
+  background: #fff;
+  padding: 0 15px;
+}
+
+page-chat .floatLeft {
+  float: left;
+  background-color: #eae9e9;
+}
+
+page-chat .floatRight {
+  float: right;
+  background-color: #92c9fd;
+}

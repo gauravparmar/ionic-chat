@@ -1,0 +1,49 @@
+page-chat {
+	div#messagebox {
+	    display: flex;
+	}
+	.chat {
+		
+		width: 80%;
+		margin: 7px 0px;
+		padding: 5px 10px;
+		border-radius: 5px;
+		display: block;
+	}
+	.chatUsername {
+		color: #488aff;
+		font-weight: bold;
+	}
+
+	.userChatStatus {
+		position: relative;
+		z-index: 1;
+		text-align: center;
+		clear: both;
+		&:before {
+			border-top: 1px solid #dfdfdf;
+			content:"";
+			margin: 0 auto; /* this centers the line to the full width specified */
+			position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+			top: 50%; left: 0; right: 0; bottom: 0;
+			width: 95%;
+			z-index: -1;
+		}
+	
+		span { 
+			/* to hide the lines from behind the text, you have to set the background color the same as the container */ 
+			background: #fff; 
+			padding: 0 15px; 
+		}
+	}
+
+	.floatLeft{
+		float: left;
+		background-color: #eae9e9;
+	}
+
+	.floatRight{
+		float: right;
+		background-color: #92c9fd;
+	}
+}
