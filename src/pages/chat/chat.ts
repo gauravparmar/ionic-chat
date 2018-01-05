@@ -5,7 +5,7 @@ import { AngularFirestore, AngularFirestoreModule  } from 'angularfire2/firestor
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabase,AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
-import  'rxjs/add/operator/switchMap';
+// import  'rxjs/add/operator/switchMap';
 
 // export interface Item { username: string, message: string }
 
@@ -46,8 +46,6 @@ export class ChatPage {
 		content: 'Loading messages...'
 	});
 	
-	datetime:Date;
-	
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFirestore, public afm : AngularFirestoreModule, public afDB: AngularFireDatabase,public loadingCtrl: LoadingController) {
 		this.username=this.navParams.data.username;
@@ -61,7 +59,9 @@ export class ChatPage {
 		console.log('constructor loaded');
 		this.showLoader();
 		// this.scrollToBottom();
-		console.log(this.datetime);
+
+		
+		
 
 	}
 
@@ -79,12 +79,14 @@ export class ChatPage {
 
 	sendMessage(){
 		console.log('Sending msg');
+		
 		if(this.message!=""){
 			this.afDB.list('chats').push({
 				username:this.username,
 				message:this.message,
 				joined:false,
-				left:false		
+				left:false,
+				datetime:this.getCurrentTimeStamp()		
 			});
 		}
 
@@ -101,7 +103,8 @@ export class ChatPage {
 				username:this.username,
 				message:this.message,
 				joined:false,
-				left:false		
+				left:false,
+				datetime:this.getCurrentTimeStamp()		
 			});
 	
 			this.message="";
@@ -152,7 +155,8 @@ export class ChatPage {
 			username:this.username,
 			message:"",
 			joined:true,
-			left:false		
+			left:false,
+			datetime:this.getCurrentTimeStamp()		
 		});
 
 		// setTimeout(() => {
@@ -165,7 +169,8 @@ export class ChatPage {
 			username:this.username,
 			message:"",
 			joined:false,
-			left:true	
+			left:true,
+			datetime:this.getCurrentTimeStamp()	
 		});	
 	}
 
@@ -197,8 +202,15 @@ export class ChatPage {
 			username:this.username,
 			message:"",
 			joined:true,
-			left:false		
+			left:false,
+			datetime:this.getCurrentTimeStamp()		
 		});
+	}
+
+	getCurrentTimeStamp(){
+		let datetime=Date.now();
+		console.log('datetime : '+datetime);
+		return datetime;
 	}
 	
 	

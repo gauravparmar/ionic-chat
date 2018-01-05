@@ -24,9 +24,11 @@
       <div *ngIf="!item.joined && !item.left" [class]="username==item.username?'chat floatRight':'chat floatLeft'">
           <div class="chatUsername">{{item.username}}</div>
           <div class="chatMessage">{{item.message}}</div>
+          <div class="chatDateTime">{{item.datetime | date:'dd-MM-yy hh:mm a'}}</div>
+          <!-- <ion-datetime displayFormat="MM/DD/YYYY"  class="chatDateTime">{{item.datetime}}</ion-datetime> -->
       </div>
-      <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined</span></div>
-      <div class="userChatStatus" *ngIf="item.left"><span>{{item.username}} left</span></div>
+      <!-- <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined at {{item.datetime | date:'dd-MM-yy hh:mm a'}}</span></div>
+      <div class="userChatStatus" *ngIf="item.left"><span>{{item.username}} left at {{item.datetime | date:'dd-MM-yy hh:mm a'}}</span></div> -->
     </div>
   </div>
   <ion-label id="myLabel">&nbsp;</ion-label>

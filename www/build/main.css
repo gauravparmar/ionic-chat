@@ -25736,3 +25736,10 @@ page-chat .floatRight {
   float: right;
   background-color: #92c9fd;
 }
+
+page-chat .chatDateTime {
+  font-size: smaller;
+  color: gray;
+  float: right;
+  padding-top: 5px;
+}

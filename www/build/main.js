@@ -34,14 +34,14 @@ webpackEmptyAsyncContext.id = 233;
 
 /***/ }),
 
-/***/ 336:
+/***/ 335:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__chat_chat__ = __webpack_require__(337);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__chat_chat__ = __webpack_require__(336);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -59,6 +59,11 @@ var HomePage = (function () {
         this.navCtrl = navCtrl;
         this.alertCtrl = alertCtrl;
         this.username = "";
+        var timestamp = Date.now();
+        console.log('timestamp : ' + timestamp);
+        // let datetime=new Date(1515137660000);
+        var datetime = new Date(timestamp);
+        console.log('datetime : ' + datetime.toLocaleString());
     }
     HomePage.prototype.alert = function (alertTitle, alertMsg) {
         var alert = this.alertCtrl.create({
@@ -80,7 +85,7 @@ var HomePage = (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      ChatApp\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n	<!-- <p>Enter your username</p> -->\n	<ion-item>\n		<ion-label floating>Name</ion-label>\n		<ion-input type="text" [(ngModel)]="username"></ion-input>\n	</ion-item>\n	<button ion-button block (click)="loginUser()">Enter</button>\n</ion-content>\n'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      ChatApp\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n	<!-- <p>Enter your username</p> -->\n	<ion-item>\n		<ion-label floating>Name</ion-label>\n		<ion-input type="text" [(ngModel)]="username"></ion-input>\n	</ion-item>\n	<button ion-button block (click)="loginUser()">Enter</button>\n</ion-content>\n<ion-footer>\n  <ion-toolbar>\n    <ion-title>Developed By : Gaurav Parmar</ion-title>\n  </ion-toolbar>\n</ion-footer>\n'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], HomePage);
@@ -91,7 +96,7 @@ var HomePage = (function () {
 
 /***/ }),
 
-/***/ 337:
+/***/ 336:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -100,8 +105,6 @@ var HomePage = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__ = __webpack_require__(285);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_switchMap__ = __webpack_require__(333);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_switchMap__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -117,7 +120,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 // import { AngularFirestoreModule } from 'angularfire2/firestore';
 
-
+// import  'rxjs/add/operator/switchMap';
 // export interface Item { username: string, message: string }
 /**
  * Generated class for the ChatPage page.
@@ -159,7 +162,6 @@ var ChatPage = (function () {
         console.log('constructor loaded');
         this.showLoader();
         // this.scrollToBottom();
-        console.log(this.datetime);
     }
     ChatPage.prototype.showLoader = function () {
         this.loaderState = true;
@@ -177,7 +179,8 @@ var ChatPage = (function () {
                 username: this.username,
                 message: this.message,
                 joined: false,
-                left: false
+                left: false,
+                datetime: this.getCurrentTimeStamp()
             });
         }
         this.message = "";
@@ -190,7 +193,8 @@ var ChatPage = (function () {
                 username: this.username,
                 message: this.message,
                 joined: false,
-                left: false
+                left: false,
+                datetime: this.getCurrentTimeStamp()
             });
             this.message = "";
             this.scrollToBottom('eventHandler');
@@ -231,7 +235,8 @@ var ChatPage = (function () {
             username: this.username,
             message: "",
             joined: true,
-            left: false
+            left: false,
+            datetime: this.getCurrentTimeStamp()
         });
         // setTimeout(() => {
         // 	this.content.scrollToBottom();
@@ -242,7 +247,8 @@ var ChatPage = (function () {
             username: this.username,
             message: "",
             joined: false,
-            left: true
+            left: true,
+            datetime: this.getCurrentTimeStamp()
         });
     };
     // scrollto() {
@@ -270,8 +276,14 @@ var ChatPage = (function () {
             username: this.username,
             message: "",
             joined: true,
-            left: false
+            left: false,
+            datetime: this.getCurrentTimeStamp()
         });
+    };
+    ChatPage.prototype.getCurrentTimeStamp = function () {
+        var datetime = Date.now();
+        console.log('datetime : ' + datetime);
+        return datetime;
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */]),
@@ -279,25 +291,24 @@ var ChatPage = (function () {
     ], ChatPage.prototype, "content", void 0);
     ChatPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-chat',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/'<!--\n  Generated template for the ChatPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Chats\n    </ion-title>\n    <ion-buttons end>\n      <button ion-button icon-only color="royal" (click)="deleteAllMessages()">\n        <ion-icon name="trash"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n<!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->\n<ion-content padding has-footer>\n  <div class="chatArea">\n    <div *ngFor="let item of items | async">\n      <div *ngIf="!item.joined && !item.left" [class]="username==item.username?\'chat floatRight\':\'chat floatLeft\'">\n          <div class="chatUsername">{{item.username}}</div>\n          <div class="chatMessage">{{item.message}}</div>\n      </div>\n      <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined</span></div>\n      <div class="userChatStatus" *ngIf="item.left"><span>{{item.username}} left</span></div>\n    </div>\n  </div>\n  <ion-label id="myLabel">&nbsp;</ion-label>\n</ion-content>\n\n\n<ion-footer>\n  <div id="messagebox">\n    <!-- <ion-list> -->\n        <ion-item>\n          <!-- <ion-label  >Enter message here..</ion-label> -->\n          <ion-input [(ngModel)]="message" placeholder="Enter message here.." (keypress)="eventHandler($event.keyCode)"></ion-input>\n          <!-- <ion-input [(ngModel)]="message" placeholder="Enter message here.." ></ion-input> -->\n        </ion-item>\n      <!-- </ion-list> -->\n    <!-- <ion-toolbar>\n      <ion-label color="primary" floating>Enter message here...</ion-label>\n      <ion-input [(ngModel)]="message"></ion-input>  \n    </ion-toolbar> -->\n    <button type="button" ion-button (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>\n  </div>\n</ion-footer>'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/,
+            selector: 'page-chat',template:/*ion-inline-start:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/'<!--\n  Generated template for the ChatPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Chats\n    </ion-title>\n    <ion-buttons end>\n      <button ion-button icon-only color="royal" (click)="deleteAllMessages()">\n        <ion-icon name="trash"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n<!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->\n<ion-content padding has-footer>\n  <div class="chatArea">\n    <div *ngFor="let item of items | async">\n      <div *ngIf="!item.joined && !item.left" [class]="username==item.username?\'chat floatRight\':\'chat floatLeft\'">\n          <div class="chatUsername">{{item.username}}</div>\n          <div class="chatMessage">{{item.message}}</div>\n          <div class="chatDateTime">{{item.datetime | date:\'dd-MM-yy hh:mm a\'}}</div>\n          <!-- <ion-datetime displayFormat="MM/DD/YYYY"  class="chatDateTime">{{item.datetime}}</ion-datetime> -->\n      </div>\n      <!-- <div class="userChatStatus" *ngIf="item.joined"><span>{{item.username}} joined at {{item.datetime | date:\'dd-MM-yy hh:mm a\'}}</span></div>\n      <div class="userChatStatus" *ngIf="item.left"><span>{{item.username}} left at {{item.datetime | date:\'dd-MM-yy hh:mm a\'}}</span></div> -->\n    </div>\n  </div>\n  <ion-label id="myLabel">&nbsp;</ion-label>\n</ion-content>\n\n\n<ion-footer>\n  <div id="messagebox">\n    <!-- <ion-list> -->\n        <ion-item>\n          <!-- <ion-label  >Enter message here..</ion-label> -->\n          <ion-input [(ngModel)]="message" placeholder="Enter message here.." (keypress)="eventHandler($event.keyCode)"></ion-input>\n          <!-- <ion-input [(ngModel)]="message" placeholder="Enter message here.." ></ion-input> -->\n        </ion-item>\n      <!-- </ion-list> -->\n    <!-- <ion-toolbar>\n      <ion-label color="primary" floating>Enter message here...</ion-label>\n      <ion-input [(ngModel)]="message"></ion-input>  \n    </ion-toolbar> -->\n    <button type="button" ion-button (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>\n  </div>\n</ion-footer>'/*ion-inline-end:"C:\xampp\htdocs\github\ionic-chat\src\pages\chat\chat.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _f || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["b" /* AngularFirestoreModule */], __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]])
     ], ChatPage);
     return ChatPage;
-    var _a, _b, _c, _d, _e, _f;
 }());
 
 //# sourceMappingURL=chat.js.map
 
 /***/ }),
 
-/***/ 338:
+/***/ 337:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(339);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(355);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(338);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(354);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -305,7 +316,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 355:
+/***/ 354:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -320,8 +331,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_database__ = __webpack_require__(299);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_component__ = __webpack_require__(535);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_home_home__ = __webpack_require__(336);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_chat_chat__ = __webpack_require__(337);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_home_home__ = __webpack_require__(335);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_chat_chat__ = __webpack_require__(336);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -400,7 +411,7 @@ var AppModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(276);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(273);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(336);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(335);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -440,5 +451,5 @@ var MyApp = (function () {
 
 /***/ })
 
-},[338]);
+},[337]);
 //# sourceMappingURL=main.js.map

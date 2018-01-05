@@ -12,7 +12,13 @@ export class HomePage {
 	username:string ="";
 
 	constructor(public navCtrl: NavController,public alertCtrl: AlertController) {
+		let timestamp=Date.now();
+		console.log('timestamp : '+timestamp);
 
+		// let datetime=new Date(1515137660000);
+		let datetime=new Date(timestamp);
+
+		console.log('datetime : '+datetime.toLocaleString());
 	}
 
 	alert(alertTitle:string,alertMsg:string){
